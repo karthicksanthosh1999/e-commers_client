@@ -17,10 +17,8 @@ import Check_Auth from "./components/common/Check_Auth";
 import Un_Auth from "./components/un_auth/Un_Auth";
 
 function App() {
-  const isAuthenticated = true;
-  const user = {
-    name: "joseph",
-  };
+  const isAuthenticated = false;
+  const user = null;
 
   return (
     <div className="flex flex-col overflow-hidden bg-white">
