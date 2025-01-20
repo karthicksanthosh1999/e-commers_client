@@ -11,13 +11,13 @@ export const registerUser = createAsyncThunk(
   "/api/register",
   async (formData) => {
     const response = await axios.post(
-      // `${BASE_URL}/api/auth/register`,
       `http://localhost:4000/api/auth/register`,
       formData,
       {
         withCredentials: true,
       }
     );
+    console.log({ response: response?.data });
     return response.data;
   }
 );

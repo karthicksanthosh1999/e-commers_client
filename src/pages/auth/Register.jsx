@@ -26,14 +26,16 @@ const AuthRegister = () => {
             title: data?.payload?.message,
           });
           navigate("/auth/login");
-        } else {
-          console.log(data.payload);
-          toast({
-            title: data?.payload?.message,
-          });
         }
+        console.log(data);
+        toast({
+          title: data?.payload?.message,
+          variant: "destructive",
+        });
       })
-      .catch((err) => console.log(err));
+      .catch((err) => {
+        console.log(err);
+      });
   };
 
   return (
