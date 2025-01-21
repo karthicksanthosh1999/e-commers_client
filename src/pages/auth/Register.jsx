@@ -17,25 +17,28 @@ const AuthRegister = () => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const { toast } = useToast();
-  const handleSubmit = (event) => {
+  const handleSubmit = async (event) => {
     event.preventDefault();
-    dispatch(registerUser(formData))
-      .then((data) => {
-        if (data?.payload?.success) {
-          toast({
-            title: data?.payload?.message,
-          });
+    try {
+      const resultAction = await dispatch(registerUser(formData));
+
+      if (registerUser.fulfilled.match(resultAction)) {
+        const payload = resultAction.payload;
+        if (payload.success) {
+          toast({ title: payload.message });
           navigate("/auth/login");
+        } else {
+          toast({ title: payload.message, variant: "destructive" });
         }
-        console.log(data);
+      } else if (registerUser.rejected.match(resultAction)) {
         toast({
-          title: data?.payload?.message,
+          title: resultAction?.payload?.message || "Registration failed",
           variant: "destructive",
         });
-      })
-      .catch((err) => {
-        console.log(err);
-      });
+      }
+    } catch (err) {
+      console.error("Unexpected error:", err);
+    }
   };
 
   return (

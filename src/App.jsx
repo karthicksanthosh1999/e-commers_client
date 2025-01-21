@@ -15,10 +15,17 @@ import ShoppingListing from "./pages/shopping_view/Listing";
 import ShoppingCheckout from "./pages/shopping_view/Checkout";
 import Check_Auth from "./components/common/Check_Auth";
 import Un_Auth from "./components/un_auth/Un_Auth";
+import { useDispatch, useSelector } from "react-redux";
+import ShoppingHome from "./components/shopping_view/Home";
+import { useEffect } from "react";
+import { checkAuth } from "./features/slices/auth_slices";
 
 function App() {
-  const isAuthenticated = false;
-  const user = null;
+  const { isAuthenticated, user } = useSelector((state) => state.auth);
+  const dispatch = useDispatch();
+  useEffect(() => {
+    dispatch(checkAuth());
+  }, [dispatch]);
 
   return (
     <div className="flex flex-col overflow-hidden bg-white">
@@ -63,6 +70,7 @@ function App() {
           <Route path="account" element={<ShoppingAccount />} />
           <Route path="listing" element={<ShoppingListing />} />
           <Route path="checkout" element={<ShoppingCheckout />} />
+          <Route path="home" element={<ShoppingHome />} />
         </Route>
 
         {/* PAGE NOT FOUND */}
