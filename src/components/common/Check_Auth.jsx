@@ -3,7 +3,7 @@ import { Navigate, useLocation } from "react-router-dom";
 
 const Check_Auth = ({ isAuthenticated, children, user }) => {
   const location = useLocation();
-  const userRole = user?.role;
+  const userRole = user?.data?.role;
 
   if (
     !isAuthenticated &&

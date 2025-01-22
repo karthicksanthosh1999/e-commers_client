@@ -51,14 +51,14 @@ const CommonForm = ({
               })
             }
           >
-            <SelectTrigger className="w-full ">
-              <SelectValue placeholder={getControlledItem.placeholder} />
+            <SelectTrigger className="w-full">
+              <SelectValue placeholder={getControlledItem.label} />
             </SelectTrigger>
             <SelectContent>
               {getControlledItem.options && getControlledItem.options.length > 0
                 ? getControlledItem.options.map((item) => (
-                    <SelectItem key={item.id} value={item.id}>
-                      {item.lable}
+                    <SelectItem key={item.id} value={item.value}>
+                      {item.label}
                     </SelectItem>
                   ))
                 : null}

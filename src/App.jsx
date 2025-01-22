@@ -19,13 +19,23 @@ import { useDispatch, useSelector } from "react-redux";
 import ShoppingHome from "./components/shopping_view/Home";
 import { useEffect } from "react";
 import { checkAuth } from "./features/slices/auth_slices";
+import { Skeleton } from "./components/ui/skeleton";
 
 function App() {
-  const { isAuthenticated, user } = useSelector((state) => state.auth);
+  const { isAuthenticated, user, isLoading } = useSelector(
+    (state) => state.auth
+  );
   const dispatch = useDispatch();
   useEffect(() => {
     dispatch(checkAuth());
   }, [dispatch]);
+
+  if (isLoading)
+    return (
+      <div>
+        <Skeleton />
+      </div>
+    );
 
   return (
     <div className="flex flex-col overflow-hidden bg-white">
@@ -53,7 +63,7 @@ function App() {
           }
         >
           <Route path="dashboard" element={<AdminDashboard />} />
-          <Route path="order" element={<AdminOrder />} />
+          <Route path="orders" element={<AdminOrder />} />
           <Route path="products" element={<AdminProducts />} />
           <Route path="features" element={<AdminFeatures />} />
         </Route>

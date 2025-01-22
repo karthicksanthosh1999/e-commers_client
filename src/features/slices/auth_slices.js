@@ -43,7 +43,7 @@ export const loginUser = createAsyncThunk(
 
 export const checkAuth = createAsyncThunk("auth/check-auth", async () => {
   const response = await axios.get(
-    "http://localhost:4000/api/auth/check-auth",
+    "http://localhost:4000/api/auth/auth-check",
     {
       withCredentials: true,
       headers: {
