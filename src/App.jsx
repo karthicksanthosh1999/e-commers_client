@@ -20,6 +20,7 @@ import ShoppingHome from "./components/shopping_view/Home";
 import { useEffect } from "react";
 import { checkAuth } from "./features/slices/auth_slices";
 import { Skeleton } from "./components/ui/skeleton";
+export const BASE_URL = import.meta.env.VITE_DEV_URL;
 
 function App() {
   const { isAuthenticated, user, isLoading } = useSelector(
