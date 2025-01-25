@@ -26,6 +26,7 @@ const AdminProducts = () => {
   const [formData, setFormData] = useState(initalState);
   const [imageFile, setImageFile] = useState(null);
   const [uploadedImageUrl, setUploadedImageUrl] = useState("");
+  const [imageLoadingState, setImageLoadingState] = useState(false);
 
   const handleSubmit = () => {};
 
