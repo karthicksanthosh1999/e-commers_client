@@ -8,7 +8,9 @@ import {
   SheetTitle,
 } from "@/components/ui/sheet";
 import { addProductFormElements } from "@/config";
-import React, { useState } from "react";
+import { fetchAllProducts } from "@/features/slices/admin";
+import React, { useEffect, useState } from "react";
+import { useDispatch, useSelector } from "react-redux";
 
 const AdminProducts = () => {
   const initalState = {
@@ -21,14 +23,22 @@ const AdminProducts = () => {
     salePrice: "",
     totalStock: "",
   };
-
+  const { products } = useSelector((state) => state.adminProducts);
+  console.log(products);
   const [openCreateProductInDialog, setOpenProductInDialog] = useState(false);
   const [formData, setFormData] = useState(initalState);
   const [imageFile, setImageFile] = useState(null);
   const [uploadedImageUrl, setUploadedImageUrl] = useState("");
   const [imageLoadingState, setImageLoadingState] = useState(false);
+  const dispatch = useDispatch();
 
-  const handleSubmit = () => {};
+  useEffect(() => {
+    dispatch(fetchAllProducts());
+  }, [dispatch]);
+
+  const handleSubmit = (event) => {
+    event.preventDefault();
+  };
 
   return (
     <>
@@ -51,6 +61,8 @@ const AdminProducts = () => {
               setImageFile={setImageFile}
               uploadedImageUrl={uploadedImageUrl}
               setUploadedImageUrl={setUploadedImageUrl}
+              imageLoadingState={imageLoadingState}
+              setImageLoadingState={setImageLoadingState}
             />
             <div className="py-6">
               <CommonForm

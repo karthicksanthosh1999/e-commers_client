@@ -1,10 +1,11 @@
-import React, { useEffect, useRef } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import { Label } from "../ui/label";
 import { Input } from "../ui/input";
 import { FileIcon, UploadCloudIcon, XIcon } from "lucide-react";
 import { Button } from "../ui/button";
 import axios from "axios";
 import { BASE_URL } from "@/App";
+import { Skeleton } from "../ui/skeleton";
 
 const ProductImageUpload = ({
   imageFile,
@@ -12,10 +13,13 @@ const ProductImageUpload = ({
   uploadedImageUrl,
   setUploadedImageUrl,
   setImageLoadingState,
+  imageLoadingState,
 }) => {
+  const [selectedImage, setSelectedImage] = useState(null);
   const inputRef = useRef(null);
   const handleInputImageChange = (event) => {
     const selectedFile = event.target.files[0];
+    setSelectedImage(URL.createObjectURL(event.target.files[0]));
     if (selectedFile) setImageFile(selectedFile);
   };
 
@@ -44,10 +48,11 @@ const ProductImageUpload = ({
       { withCredentials: true }
     );
     if (response?.data?.data?.url) {
-      setImageLoadingState(false);
       setUploadedImageUrl(response.data);
+      setImageLoadingState(false);
     }
   };
+  console.log(imageFile);
 
   useEffect(() => {
     if (imageFile !== null) uploadImageToCloudinary();
@@ -76,10 +81,13 @@ const ProductImageUpload = ({
               <UploadCloudIcon className="w-10 h-10 text-muted-foreground mb-2" />
               <span>Drag & Drop or click to upload image</span>
             </Label>
+          ) : imageLoadingState ? (
+            <Skeleton className="h-10 bg-gray-100" />
           ) : (
             <div className="flex items-center justify-between">
               <div className="flex items-center">
-                <FileIcon className="w-8 text-primary mr-2 h-8" />
+                {/* <FileIcon className="w-8 text-primary mr-2 h-8" /> */}
+                <img src={selectedImage} height="30px" width="50px" />
               </div>
               <p className="text-sm font-medium">{imageFile.name}</p>
               <Button

@@ -7,7 +7,6 @@ import { Sheet, SheetContent, SheetHeader, SheetTitle } from "../ui/sheet";
 const AdminSidebar = ({ open, setOpen }) => {
   const navigate = useNavigate();
   const location = useLocation();
-  console.log(location.pathname);
   const currentLocation = location.pathname;
 
   function MenuItems({ setOpen }) {

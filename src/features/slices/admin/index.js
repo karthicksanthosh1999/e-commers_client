@@ -28,7 +28,7 @@ export const fetchAllProducts = createAsyncThunk(
   "/product/getAllProducts",
   async () => {
     const result = await axios.get(
-      `${BASE_URL}/admin/products/get-all-product`,
+      `${BASE_URL}/admin/products/get-all-products`,
       {
         headers: {
           "Content-Type": "application/json",
@@ -114,3 +114,5 @@ const AdminProductsSlice = createSlice({
       });
   },
 });
+
+export default AdminProductsSlice.reducer;
