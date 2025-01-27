@@ -1,7 +1,6 @@
 import { BASE_URL } from "@/App";
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
 import axios from "axios";
-import { act } from "react";
 
 const initialState = {
   isLoading: false,
@@ -36,9 +35,8 @@ export const fetchAllProducts = createAsyncThunk(
         withCredentials: true,
       }
     );
-    if (result.data) {
-      console.log(result.data?.data);
-      return result.data;
+    if (result) {
+      return result.data?.data;
     }
   }
 );
@@ -56,6 +54,10 @@ export const editProduct = createAsyncThunk(
         withCredentials: true,
       }
     );
+    if (result) {
+      console.log(result.data?.data);
+      return result.data?.data;
+    }
   }
 );
 

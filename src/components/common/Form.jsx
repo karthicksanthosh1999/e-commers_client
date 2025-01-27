@@ -17,7 +17,9 @@ const CommonForm = ({
   setFormData,
   onSubmit,
   buttonText,
+  isBtnDisable,
 }) => {
+  console.log(isBtnDisable);
   const renderInputByComponentType = (getControlledItem) => {
     let element = null;
     const value = formData[getControlledItem.name] || "";
@@ -57,7 +59,7 @@ const CommonForm = ({
             <SelectContent>
               {getControlledItem.options && getControlledItem.options.length > 0
                 ? getControlledItem.options.map((item) => (
-                    <SelectItem key={item.id} value={item.value}>
+                    <SelectItem key={item.id} value={item.id}>
                       {item.label}
                     </SelectItem>
                   ))
@@ -112,7 +114,11 @@ const CommonForm = ({
           </div>
         ))}
       </div>
-      <Button type="submit" className="w-full mt-2">
+      <Button
+        type="submit"
+        className={`${isBtnDisable && "hover:cursor-not-allowed"} w-full mt-2`}
+        disabled={isBtnDisable}
+      >
         {buttonText || "Submit"}
       </Button>
     </form>
