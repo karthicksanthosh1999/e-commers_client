@@ -19,7 +19,6 @@ const CommonForm = ({
   buttonText,
   isBtnDisable,
 }) => {
-  console.log(isBtnDisable);
   const renderInputByComponentType = (getControlledItem) => {
     let element = null;
     const value = formData[getControlledItem.name] || "";

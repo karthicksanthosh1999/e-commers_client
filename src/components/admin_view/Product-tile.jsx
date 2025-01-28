@@ -7,6 +7,7 @@ const AdminProductTile = ({
   setOpenProductInDialog,
   setFormData,
   setSelectedProductId,
+  handleProductDelete,
 }) => {
   const handleProductEdit = (id, product) => {
     setFormData(product);
@@ -42,7 +43,9 @@ const AdminProductTile = ({
           <Button onClick={() => handleProductEdit(product?._id, product)}>
             Edit
           </Button>
-          <Button>Delete</Button>
+          <Button onClick={() => handleProductDelete(product?._id)}>
+            Delete
+          </Button>
         </CardFooter>
       </Card>
     </>

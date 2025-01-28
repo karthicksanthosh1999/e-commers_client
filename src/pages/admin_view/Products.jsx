@@ -13,6 +13,7 @@ import {
   addNewProduct,
   editProduct,
   fetchAllProducts,
+  deleteProduct,
 } from "@/features/slices/admin";
 import { useToast } from "@/hooks/use-toast";
 import React, { useEffect, useState } from "react";
@@ -45,7 +46,7 @@ const AdminProducts = () => {
 
   const isValidForm = () => {
     return Object.keys(formData)
-      .map((item) => formData[item] !== " ")
+      .map((item) => formData[item] !== "")
       .every((item) => item);
   };
 
@@ -54,7 +55,6 @@ const AdminProducts = () => {
     selectedProductId !== null
       ? dispatch(editProduct({ id: selectedProductId, formData }))
           .then((data) => {
-            console.log(data);
             if (data.payload) {
               console.log(data.payload);
               dispatch(fetchAllProducts());
@@ -83,6 +83,21 @@ const AdminProducts = () => {
           })
           .catch((err) => console.log(err));
   };
+
+  const handleProductDelete = (getCurrentProductId) => {
+    dispatch(deleteProduct(getCurrentProductId))
+      .then((data) => {
+        console.log(data, "Deleted Data");
+        if (data.payload) {
+          dispatch(fetchAllProducts());
+          toast({
+            title: "Product deleted successfully",
+          });
+        }
+      })
+      .catch((err) => console.log(err));
+  };
+
   return (
     <>
       <div className="mb-5 w-full flex justify-end">
@@ -99,6 +114,7 @@ const AdminProducts = () => {
                 setSelectedProductId={setSelectedProductId}
                 setFormData={setFormData}
                 setOpenProductInDialog={setOpenProductInDialog}
+                handleProductDelete={handleProductDelete}
               />
             ))
           : null}

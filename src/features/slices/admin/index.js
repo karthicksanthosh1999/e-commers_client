@@ -82,7 +82,7 @@ export const getSingleProduct = createAsyncThunk(
 
 export const deleteProduct = createAsyncThunk("/delete/product", async (id) => {
   const result = await axios.delete(
-    `${BASE_URL}/admin/products/delete-product`,
+    `${BASE_URL}/admin/products/delete-product/${id}`,
     {
       headers: {
         "Content-Type": "application/json",

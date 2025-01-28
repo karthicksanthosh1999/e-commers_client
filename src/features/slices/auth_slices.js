@@ -1,3 +1,4 @@
+import { BASE_URL } from "@/App";
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
 import axios from "axios";
 
@@ -11,13 +12,9 @@ export const registerUser = createAsyncThunk(
   "auth/registerUser",
   async (formData, { rejectWithValue }) => {
     try {
-      const response = await axios.post(
-        "http://localhost:4000/api/auth/register",
-        formData,
-        {
-          withCredentials: true,
-        }
-      );
+      const response = await axios.post(`${BASE_URL}/auth/register`, formData, {
+        withCredentials: true,
+      });
       return response.data;
     } catch (error) {
       return rejectWithValue(error.response?.data || "Something went wrong");
@@ -29,11 +26,9 @@ export const loginUser = createAsyncThunk(
   "auth/login",
   async (formData, { rejectWithValue }) => {
     try {
-      const response = await axios.post(
-        "http://localhost:4000/api/auth/login",
-        formData,
-        { withCredentials: true }
-      );
+      const response = await axios.post(`${BASE_URL}/auth/login`, formData, {
+        withCredentials: true,
+      });
       return response.data;
     } catch (error) {
       return rejectWithValue(error?.response?.data || "Something went wrong");
@@ -42,17 +37,23 @@ export const loginUser = createAsyncThunk(
 );
 
 export const checkAuth = createAsyncThunk("auth/check-auth", async () => {
-  const response = await axios.get(
-    "http://localhost:4000/api/auth/auth-check",
+  const response = await axios.get(`${BASE_URL}/auth/auth-check`, {
+    withCredentials: true,
+    headers: {
+      "Cache-Control": "no-store, no-cache, must-revalidate, proxy-revalidate",
+    },
+  });
+  return response.data;
+});
+
+export const logoutUser = createAsyncThunk("auth/logout", async () => {
+  const response = await axios.post(
+    `${BASE_URL}/auth/logout`,
+    {},
     {
       withCredentials: true,
-      headers: {
-        "Cache-Control":
-          "no-store, no-cache, must-revalidate, proxy-revalidate",
-      },
     }
   );
-  return response.data;
 });
 
 const authSlices = createSlice({
@@ -99,6 +100,11 @@ const authSlices = createSlice({
         state.isAuthenticated = true;
       })
       .addCase(checkAuth.rejected, (state, action) => {
+        state.isLoading = false;
+        state.user = null;
+        state.isAuthenticated = false;
+      })
+      .addCase(logoutUser.fulfilled, (state) => {
         state.isLoading = false;
         state.user = null;
         state.isAuthenticated = false;

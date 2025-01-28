@@ -78,10 +78,10 @@ function App() {
             </Check_Auth>
           }
         >
-          <Route path="account" element={<ShoppingAccount />} />
-          <Route path="listing" element={<ShoppingListing />} />
-          <Route path="checkout" element={<ShoppingCheckout />} />
           <Route path="home" element={<ShoppingHome />} />
+          <Route path="listing" element={<ShoppingListing />} />
+          <Route path="account" element={<ShoppingAccount />} />
+          <Route path="checkout" element={<ShoppingCheckout />} />
         </Route>
 
         {/* PAGE NOT FOUND */}
