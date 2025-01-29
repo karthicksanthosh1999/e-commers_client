@@ -3,15 +3,25 @@ import { Button } from "@/components/ui/button";
 import {
   DropdownMenu,
   DropdownMenuContent,
+  DropdownMenuItem,
   DropdownMenuLabel,
+  DropdownMenuSeparator,
 } from "@/components/ui/dropdown-menu";
 import { Sheet, SheetContent, SheetTrigger } from "@/components/ui/sheet";
 import { shoppingViewHeaderMenuItems } from "@/config";
+import { logoutUser } from "@/features/slices/auth_slices";
 import { DropdownMenuTrigger } from "@radix-ui/react-dropdown-menu";
-import { HousePlug, Key, Menu, ShoppingCart } from "lucide-react";
+import {
+  HousePlug,
+  Key,
+  LogOut,
+  Menu,
+  ShoppingCart,
+  UserCog,
+} from "lucide-react";
 import React from "react";
-import { useSelector } from "react-redux";
-import { Link } from "react-router-dom";
+import { useDispatch, useSelector } from "react-redux";
+import { Link, useNavigate } from "react-router-dom";
 
 const MenuItems = () => {
   return (
@@ -32,7 +42,13 @@ const MenuItems = () => {
 
 const HeaderRightContent = () => {
   const { user } = useSelector((state) => state.auth);
-  console.log(user?.data?.userName, "user");
+  const navigate = useNavigate();
+  const dispatch = useDispatch();
+
+  const handleLogout = () => {
+    dispatch(logoutUser());
+  };
+
   return (
     <div className="flex lg:items-center lg:flex-row flex-col gap-4">
       <Button variant="outline" size="icon">
@@ -41,7 +57,7 @@ const HeaderRightContent = () => {
       </Button>
       <DropdownMenu>
         <DropdownMenuTrigger asChild>
-          <Avatar className="bg-black">
+          <Avatar className="bg-black hover:cursor-pointer">
             <AvatarFallback className="bg-black text-white font-extrabold">
               {user?.data?.userName[0].toUpperCase()}
             </AvatarFallback>
@@ -51,6 +67,18 @@ const HeaderRightContent = () => {
           <DropdownMenuLabel>
             Logged in as {user?.data?.userName}
           </DropdownMenuLabel>
+          <DropdownMenuItem
+            className="cursor-pointer"
+            onClick={() => navigate("/shop/account")}
+          >
+            <UserCog className="mr-2 mt-2 h-4 w-4" />
+            Account
+          </DropdownMenuItem>
+          <DropdownMenuSeparator />
+          <DropdownMenuItem className="cursor-pointer" onClick={handleLogout}>
+            <LogOut className="mr-2 mt-2 h-4 w-4" />
+            Logout
+          </DropdownMenuItem>
         </DropdownMenuContent>
       </DropdownMenu>
     </div>
@@ -75,16 +103,15 @@ const ShoppingHeader = () => {
           </SheetTrigger>
           <SheetContent side="left" className="w-full max-w-xs">
             <MenuItems />
+            <HeaderRightContent />
           </SheetContent>
         </Sheet>
         <div className="hidden lg:block ">
           <MenuItems />
         </div>
-        {isAuthenticated ? (
-          <div>
-            <HeaderRightContent />
-          </div>
-        ) : null}
+        <div className="hidden lg:block ">
+          <HeaderRightContent />
+        </div>
       </div>
     </header>
   );
