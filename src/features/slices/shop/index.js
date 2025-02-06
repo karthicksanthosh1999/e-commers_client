@@ -5,13 +5,13 @@ import axios from "axios";
 const initialState = {
   isLoading: false,
   productList: [],
+  producDetails: {},
   error: null,
 };
 
 export const fetchAllFilteredProducts = createAsyncThunk(
   "shopping/fetchAllFilteredProducts",
   async ({ filterParams, sortParams }) => {
-
     const query = new URLSearchParams({
       ...filterParams, sortBy: sortParams
     })
@@ -23,6 +23,13 @@ export const fetchAllFilteredProducts = createAsyncThunk(
     return result.data?.data;
   }
 );
+
+
+export const fetchProductDetails = createAsyncThunk('shopping/fetchSingleProduct', async (id) => {
+  const result = await axios.get(`${BASE_URL}/shop/products/get-product/${id}`)
+  return result.data?.data
+})
+
 
 const shopingSlice = createSlice({
   name: "shoppingProducts",
@@ -40,7 +47,18 @@ const shopingSlice = createSlice({
       .addCase(fetchAllFilteredProducts.rejected, (state, action) => {
         state.isLoading = false;
         state.error = action.payload;
-      });
+      })
+      .addCase(fetchProductDetails.pending, (state, action) => {
+        state.isLoading = true
+      })
+      .addCase(fetchProductDetails.fulfilled, (state, action) => {
+        state.isLoading = false;
+        state.producDetails = action.payload;
+      })
+      .addCase(fetchProductDetails.rejected, (state, action) => {
+        state.isLoading = false;
+        state.producDetails = null
+      })
   },
 });
 

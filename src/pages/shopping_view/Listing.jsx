@@ -11,9 +11,13 @@ import { Button } from "@/components/ui/button";
 import { ArrowUpDownIcon } from "lucide-react";
 import { sortOptions } from "@/config";
 import { useDispatch, useSelector } from "react-redux";
-import { fetchAllFilteredProducts } from "@/features/slices/shop";
+import {
+  fetchAllFilteredProducts,
+  fetchProductDetails,
+} from "@/features/slices/shop";
 import ShoppingProductTile from "./ProductTile";
 import { useSearchParams } from "react-router-dom";
+import ProductDetailsDigalog from "./ProductDetails";
 
 const createSearchParamsHelper = (filterParams) => {
   const queryParams = [];
@@ -28,9 +32,12 @@ const createSearchParamsHelper = (filterParams) => {
 
 const ShoppingListing = () => {
   const dispatch = useDispatch();
-  const { productList } = useSelector((state) => state.shopProducts);
+  const { productList, producDetails } = useSelector(
+    (state) => state.shopProducts
+  );
 
   const [searchParams, setSearchParams] = useSearchParams();
+  const [openDetailsDialog, setOpenDetailsDialog] = useState(false);
   const [filters, setFilters] = useState({});
   const [sort, setSort] = useState(null);
 
@@ -79,6 +86,15 @@ const ShoppingListing = () => {
       );
   }, [dispatch, sort, filters]);
 
+  useEffect(() => {
+    if (producDetails !== null) setOpenDetailsDialog(true);
+  }, [producDetails]);
+
+  const handleGetProductDetails = (getCurrentProductDetails) => {
+    dispatch(fetchProductDetails(getCurrentProductDetails));
+  };
+  console.log({ producDetails });
+
   return (
     <div className="grid grid-cols-1 md:grid-cols-[150px_1fr] gap-6 p-4 md:p-6">
       <ProductFilter filters={filters} handleFilter={handleFilter} />
@@ -115,13 +131,22 @@ const ShoppingListing = () => {
         <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4 p-3">
           {productList && productList.length > 0 ? (
             productList.map((product, index) => (
-              <ShoppingProductTile key={index} product={product} />
+              <ShoppingProductTile
+                key={index}
+                product={product}
+                handleGetProductDetails={handleGetProductDetails}
+              />
             ))
           ) : (
             <div></div>
           )}
         </div>
       </div>
+      <ProductDetailsDigalog
+        open={openDetailsDialog}
+        setOpen={setOpenDetailsDialog}
+        productDetails={producDetails}
+      />
     </div>
   );
 };
