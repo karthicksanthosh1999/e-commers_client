@@ -1,6 +1,7 @@
 import { Avatar, AvatarFallback } from "@/components/ui/avatar";
 import { Button } from "@/components/ui/button";
 import { Dialog, DialogContent } from "@/components/ui/dialog";
+import { Input } from "@/components/ui/input";
 import { Separator } from "@/components/ui/separator";
 import { StarIcon } from "lucide-react";
 import React from "react";
@@ -73,6 +74,10 @@ const ProductDetailsDigalog = ({ productDetails, open, setOpen }) => {
                   <p className="text-muted-foreground">Nice hip and armpit</p>
                 </div>
               </div>
+            </div>
+            <div className="mt-6 flex gap-2">
+              <Input placeholder="Write a review..." />
+              <Button>Submit</Button>
             </div>
           </div>
         </div>
